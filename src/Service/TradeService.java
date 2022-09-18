@@ -23,4 +23,7 @@ public class TradeService {
 	}
 
 
+    public Page getFixeDepositPage(int pageNum,int id) {
+		return tradeDao.getFixeDepositPage(pageNum,id);
+	}
 }

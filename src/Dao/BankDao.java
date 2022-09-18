@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import Bean.FixedDeposit;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -64,8 +65,12 @@ public class BankDao {
 	public int getMoney(int id, int sum) {
 		String sql="select money from t_user where id=?";
 		int n=jdbcTemplate.queryForInt(sql,id);
-		if(n<sum){
+		String sql3="select time_money from t_user where id=?";
+		int timeMmoney=jdbcTemplate.queryForInt(sql3,id);
+		if(n+timeMmoney<sum){
 			return -1;
+		}else if(n<sum&&n+timeMmoney>=sum) {
+			return -2;
 		}
 		String sql1="update t_user set money=? where id=?";
 		int m=jdbcTemplate.update(sql1,n-sum,id);
@@ -149,10 +154,14 @@ public class BankDao {
 					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String sql5="insert into t_trade(trade,balance,dataTime,userOf,money,info) values(?,?,?,?,?,?)";
 					String s="收款人:"+name+"</br>收款账户:"+number+"";
-					jdbcTemplate.update(sql5,"汇款",sum,df.format(new Date()),id,m-sum,s);
+					String sql9="select time_money from t_user where id=?";
+					int timeMmoney=jdbcTemplate.queryForInt(sql9,id);
+					jdbcTemplate.update(sql5,"汇款",sum,df.format(new Date()),id,m-sum+timeMmoney,s);
 					String sql6="insert into t_trade(trade,balance,dataTime,userOf,money,info) values(?,?,?,?,?,?)";
 					String s1="汇款人:"+name1+"</br>汇款账户:"+number1+"";
-					jdbcTemplate.update(sql6,"收款",sum,df.format(new Date()),n,m1+sum,s1);
+					String sql11="select time_money from t_user where id=?";
+					int timeMmoney1=jdbcTemplate.queryForInt(sql11,n);
+					jdbcTemplate.update(sql6,"收款",sum,df.format(new Date()),n,m1+sum+timeMmoney1,s1);
 					return m-sum+1;
 				}
 			}else{
@@ -180,7 +189,7 @@ public class BankDao {
 		int m=jdbcTemplate.update(sql1,n+sum,id);
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sql2="insert into t_trade(trade,balance,dataTime,userOf,money) values(?,?,?,?,?)";
-		String sql3="insert into t_fixeddeposit(useId,dataTime,year,money,balanceDue) values(?,?,?,?,?)";
+		String sql3="insert into t_fixeddeposit(useId,dataTime,year,money,balanceDue,lapse) values(?,?,?,?,?,0)";
 		int l=jdbcTemplate.update(sql2,"定期存款",sum,df.format(new Date()),id,n+sum);
 		int k=jdbcTemplate.update(sql3,id,df.format(new Date()),year,sum,balanceDue);
 		return n+sum;
@@ -190,5 +199,30 @@ public class BankDao {
 		String sql="select time_money from t_user where id=?";
 		int n=jdbcTemplate.queryForInt(sql,id);
 		return n;
+	}
+
+	public List<FixedDeposit> FixedToCurrent(int id) {
+		String sql="select * from t_fixeddeposit where useId="+id+"";
+		List list=jdbcTemplate.queryForList(sql);
+		return list;
+	}
+
+	public int getTimeMoney(int id) {
+		String sql="select money from t_fixeddeposit where id=?";
+		int time_money=jdbcTemplate.queryForInt(sql,id);
+		String sql1="select useId from t_fixeddeposit where id=?";
+		int useId=jdbcTemplate.queryForInt(sql1,id);
+		String sql2="select money from t_user where id=?";
+		int money=jdbcTemplate.queryForInt(sql2,useId);
+		String sql6="select time_money from t_user where id=?";
+		int time_money1=jdbcTemplate.queryForInt(sql6,useId);
+		String sql3="update t_user set money=?,time_money=? where id=?";
+		jdbcTemplate.update(sql3,money+time_money,time_money1-time_money,useId);
+		String sql4="update t_fixeddeposit set lapse=1 where id=?";
+		jdbcTemplate.update(sql4,id);
+		String sql5="insert into t_trade(trade,balance,dataTime,userOf,money) values(?,?,?,?,?)";
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		jdbcTemplate.update(sql5,"定转活期",time_money,df.format(new Date()),useId,money+time_money1);
+		return 1;
 	}
 }

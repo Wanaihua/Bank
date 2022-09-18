@@ -31,7 +31,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		int m=Integer.parseInt(request.getAttribute("no").toString());
     		if(m==-1){
     			l="账户余额不足";
-    		}else{
+    		}else if(m==-2){
+				l="您的账户活期余额不足，但可以使用定期余额,请先转入活期";
+			}else{
     			l="取款成功,余额为:"+m+"";
     		}
     	}

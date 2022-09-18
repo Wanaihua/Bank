@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import Bean.FixedDeposit;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -88,10 +89,14 @@ public class BankAction {
 		if(n>=0){
 			request.setAttribute("no", n);
 			return "get";
-		}else{
+		}else if(n==-1){
 			request.setAttribute("no", -1);
 			return "get";
+		}else if(n==-2){
+			request.setAttribute("no", -2);
+			return "get";
 		}
+		return "false";
 	}
 	//???
 	@RequestMapping("set.do")
@@ -168,6 +173,25 @@ public class BankAction {
 		request.setAttribute("id", id);
 		request.setAttribute("no", n);
 		return "remittance";
+	}
+
+	@RequestMapping("FixedToCurrent.do")
+	public String FixedToCurrent(HttpServletRequest request){
+		int id=Integer.parseInt(request.getParameter("id"));
+		String pageNum=request.getParameter("p")==null?"1":request.getParameter("p");
+		request.setAttribute("page", tradeService.getFixeDepositPage(Integer.valueOf(pageNum),id));
+		request.setAttribute("id", id);
+		return "fixedToCurrent";
+	}
+
+	@RequestMapping("getTimeMoney.do")
+	public String getTimeMoney(HttpServletRequest request){
+		int id=Integer.parseInt(request.getParameter("id"));
+		int n=bankService.getTimeMoney(id);
+		String pageNum=request.getParameter("p")==null?"1":request.getParameter("p");
+		request.setAttribute("page", tradeService.getFixeDepositPage(Integer.valueOf(pageNum),id));
+		request.setAttribute("id", id);
+		return "fixedToCurrent";
 	}
 
 }

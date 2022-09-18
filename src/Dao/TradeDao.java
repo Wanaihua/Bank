@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import Bean.FixedDeposit;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
@@ -41,4 +42,11 @@ JdbcTemplate jdbcTemplate;
         return page;
     }
 
+    public Page getFixeDepositPage(int pageNum, int id) {
+        String sql = "select count(*) from t_fixeddeposit where useId="+id+" and lapse=0";
+        int totalRecord = getTotalRecord(sql);
+        sql = "select * from t_fixeddeposit where useId="+id+" and lapse=0";
+        Page page = getPage(pageNum, FixedDeposit.class, sql, totalRecord);
+        return page;
+    }
 }

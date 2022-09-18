@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import Bean.FixedDeposit;
 import org.springframework.stereotype.Component;
 
 import Bean.BankUser;
@@ -60,5 +61,14 @@ public class BankService {
 
 	public int selectTimeMoney(int id) {
 		return bankDao.setTimeMoney(id);
+	}
+
+
+	public List<FixedDeposit> FixedToCurrent(int id) {
+		return bankDao.FixedToCurrent(id);
+	}
+
+	public int getTimeMoney(int id) {
+		return bankDao.getTimeMoney(id);
 	}
 }

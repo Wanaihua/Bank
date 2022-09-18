@@ -7,6 +7,7 @@ public class FixedDeposit {
     int year;
     String money;
     String balanceDue;
+    int lapse;
 
     public int getId() {
         return id;
@@ -54,5 +55,13 @@ public class FixedDeposit {
 
     public void setBalanceDue(String balanceDue) {
         this.balanceDue = balanceDue;
+    }
+
+    public int getLapse() {
+        return lapse;
+    }
+
+    public void setLapse(int lapse) {
+        this.lapse = lapse;
     }
 }

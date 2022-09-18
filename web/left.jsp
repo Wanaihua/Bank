@@ -25,7 +25,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	request.setAttribute("no", -1);
     	int m=Integer.parseInt(request.getParameter("m").toString());
     %>
-	<script type="text/javascript"> 
+	<script type="text/javascript">
+	function FixedToCurrent() {
+			window.open("FixedToCurrent.do?id=<%=n %>","right");
+	}
 	function a(){
 		if(confirm("确定要退出吗?"))
     		window.parent.parent.location.replace("index.jsp");  
@@ -121,6 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<li><button onclick="get()" class="but"><span><spring:message code="Withdraw money"></spring:message></span></button></li>
 		<li><button onclick="set()" class="but"><span><spring:message code="Deposits"></spring:message></span></button></li>
 		<li><button onclick="remittance()" class="but"><span><spring:message code="remittance"></spring:message></span></button></li>
+		<li><button onclick="FixedToCurrent()" class="but"><span><spring:message code="FixedToCurrent"></spring:message></span></button></li>
 		<li><button onclick="info()" class="but"><span><spring:message code="Transaction information"></spring:message></span></button></li>
 		<li><button onclick="selfInfo()" class="but"><span><spring:message code="selfInfo"></spring:message></span></button></li>
 		<li><button onclick="find()" class="but"><span><spring:message code="updateInfo"></spring:message></span></button></li>
