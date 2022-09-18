@@ -1,0 +1,31 @@
+@charset "utf-8";
+*{
+	margin: 0px;
+	padding: 0px;
+	border-left-width: 0px;
+    border-right-width: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+}
+#main{
+	margin-top: 40px;
+	width: 800px;
+	height: 500px;
+	margin-left: auto;
+    margin-right: auto;
+	margin-bottom: 0px;
+	background-repeat: repeat-x;
+	background-color: white;
+}
+#left{
+	margin-left: 50px;
+	float: left;
+}
+#right{
+	margin-left: 470px;
+	float: left;
+}
+h1{
+	color:#0F286B;
+	font-size: 22px;
+}
