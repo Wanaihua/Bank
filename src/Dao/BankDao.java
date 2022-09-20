@@ -27,13 +27,11 @@ public class BankDao {
 
 	public int login(BankUser bankUser) {
 		try {
-			String sql = "select id from t_user where userName=? and passWord=?";
-			int n = jdbcTemplate.queryForInt(sql, bankUser.getUserName(), bankUser.getPassWord());
+			int n=jdbcTemplate.queryForInt("select id from t_user where userName=? and passWord=?", bankUser.getUserName(), bankUser.getPassWord());
 			return n;
-		}catch (Exception e) {
+		}catch (Exception e){
 			return 0;
 		}
-
 	}
 	public int register(BankUser bankUser) {
 		try{

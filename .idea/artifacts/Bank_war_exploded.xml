@@ -6,10 +6,7 @@
         <element id="directory" name="classes">
           <element id="module-output" name="Bank" />
         </element>
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="lib2" />
-          <element id="library" level="project" name="lib1" />
-        </element>
+        <element id="directory" name="lib" />
       </element>
       <element id="javaee-facet-resources" facet="Bank/web/Web" />
     </root>

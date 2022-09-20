@@ -71,4 +71,5 @@ public class BankService {
 	public int getTimeMoney(int id) {
 		return bankDao.getTimeMoney(id);
 	}
+
 }

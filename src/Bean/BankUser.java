@@ -97,4 +97,12 @@ public class BankUser {
 	public void setMoney(String money) {
 		this.money = money;
 	}
+
+	public String getTime_money() {
+		return time_money;
+	}
+
+	public void setTime_money(String time_money) {
+		this.time_money = time_money;
+	}
 }
