@@ -78,6 +78,8 @@ public class BankDao {
 		return n-sum;
 	}
 	public int setMoney(int id, int sum) {
+		String s="select userName from t_user where id="+id+"";
+		String name=jdbcTemplate.queryForObject(s,String.class);
 		String sql="select money from t_user where id=?";
 		int n=jdbcTemplate.queryForInt(sql,id);
 		String sql1="update t_user set money=? where id=?";
@@ -85,6 +87,7 @@ public class BankDao {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sql2="insert into t_trade(trade,balance,dataTime,userOf,money) values(?,?,?,?,?)";
 		int l=jdbcTemplate.update(sql2,"活期存款",sum,df.format(new Date()),id,n+sum);
+		System.out.println("用户:"+name+"活期存款:"+sum+"元,定期存款时间:"+df.format(new Date())+"");
 		return n+sum;
 	}
 	public List selfInfo(int id) {
@@ -181,6 +184,8 @@ public class BankDao {
 	}
 
 	public int setTimeMoney(int id, int sum,int year,String balanceDue) {
+		String s="select userName from t_user where id="+id+"";
+		String name=jdbcTemplate.queryForObject(s,String.class);
 		String sql="select time_money from t_user where id=?";
 		int n=jdbcTemplate.queryForInt(sql,id);
 		String sql1="update t_user set time_money=? where id=?";
@@ -190,6 +195,7 @@ public class BankDao {
 		String sql3="insert into t_fixeddeposit(useId,dataTime,year,money,balanceDue,lapse) values(?,?,?,?,?,0)";
 		int l=jdbcTemplate.update(sql2,"定期存款",sum,df.format(new Date()),id,n+sum);
 		int k=jdbcTemplate.update(sql3,id,df.format(new Date()),year,sum,balanceDue);
+		System.out.println("用户:"+name+"定期存款:"+sum+"元,定期存款时间:"+df.format(new Date())+",定期存款年限:"+year+"年,到期获得:"+balanceDue);
 		return n+sum;
 	}
 

@@ -105,4 +105,5 @@ public class BankUser {
 	public void setTime_money(String time_money) {
 		this.time_money = time_money;
 	}
+
 }
